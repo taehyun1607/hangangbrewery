@@ -201,6 +201,49 @@
     background: transparent; color:#fff;
   }
   .overlay button.primary { background: var(--blue); border-color: var(--blue); }
+
+  /* ---------- Credits button & screen ---------- */
+  .credits-btn {
+    flex: 0 0 auto;
+    align-self: flex-end;
+    margin-top: clamp(10px,1.4vw,14px);
+    background: var(--ink); color:#fff; border:none; border-radius:999px;
+    padding: 9px 20px;
+    font-size: clamp(11px,0.95vw,12.5px); font-weight:700; letter-spacing:.06em;
+    font-family:inherit; cursor:pointer;
+  }
+  .credits-btn:active { opacity:.75; }
+
+  #credits { background: var(--blue-deep); color:#fff; }
+  .credits-scroll { position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .credits-inner {
+    max-width: 980px; margin: 0 auto;
+    padding: clamp(70px,9vw,110px) clamp(24px,4vw,62px) clamp(50px,7vw,80px);
+  }
+  .credits-title {
+    margin: 0 0 clamp(30px,4.2vw,46px);
+    font-weight:800; letter-spacing:-0.01em;
+    font-size: clamp(26px,3.4vw,38px);
+    color:#fff;
+  }
+  .credits-title .en {
+    display:block; margin-top:8px;
+    font-size:0.36em; font-weight:700; color: var(--blue); letter-spacing:.08em;
+  }
+  .credits-cols { display:grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(40px,5vw,80px); }
+  .role-group { margin-bottom: clamp(20px,2.6vw,28px); }
+  .role-group .role {
+    font-weight:800; font-size: clamp(11.5px,1vw,13.5px);
+    letter-spacing:.06em; color:#fff; margin-bottom:6px;
+  }
+  .role-group .names {
+    font-size: clamp(13.5px,1.25vw,16px); line-height:1.65;
+    color: rgba(255,255,255,.68); font-weight:500;
+  }
+  @media (max-aspect-ratio: 11/10) {
+    .credits-cols { grid-template-columns: 1fr; }
+    .credits-inner { padding-top: clamp(64px,12vw,90px); }
+  }
 </style>
 </head>
 <body>
@@ -259,6 +302,7 @@
       </div>
     </div>
   </div>
+  <button class="credits-btn" id="creditsBtn">CREDITS</button>
 </div>
 
 <div id="player" class="screen">
@@ -277,6 +321,40 @@
   </div>
 </div>
 
+<div id="credits" class="screen">
+  <button class="back-btn" id="creditsBackBtn">← 목록으로</button>
+  <div class="credits-scroll">
+    <div class="credits-inner">
+      <h2 class="credits-title">만든 사람들<span class="en">CREDITS</span></h2>
+      <div class="credits-cols">
+        <div class="credits-col">
+          <div class="role-group"><div class="role">CAST</div><div class="names">김건<br>서현장<br>안서진<br>임진서<br>한세린<br>한주영</div></div>
+          <div class="role-group"><div class="role">WRITTEN &amp; DIRECTED BY</div><div class="names">김태현</div></div>
+          <div class="role-group"><div class="role">1ST ASSISTANT DIRECTOR</div><div class="names">황선준</div></div>
+          <div class="role-group"><div class="role">PRODUCER</div><div class="names">이하은</div></div>
+          <div class="role-group"><div class="role">LINE PRODUCER</div><div class="names">임수현</div></div>
+          <div class="role-group"><div class="role">VFX SUPERVISOR</div><div class="names">이은기</div></div>
+          <div class="role-group"><div class="role">MOTION GRAPHIC SUPERVISOR</div><div class="names">이은기</div></div>
+          <div class="role-group"><div class="role">TITLE DESIGNER</div><div class="names">장혜원</div></div>
+          <div class="role-group"><div class="role">D.I COLORIST</div><div class="names">배산호</div></div>
+        </div>
+        <div class="credits-col">
+          <div class="role-group"><div class="role">DIRECTOR OF PHOTOGRAPHY</div><div class="names">김유민</div></div>
+          <div class="role-group"><div class="role">1ST ASSISTANT CAMERA</div><div class="names">정기백</div></div>
+          <div class="role-group"><div class="role">ART DIRECTOR</div><div class="names">맹미금</div></div>
+          <div class="role-group"><div class="role">ART ASSISTANT</div><div class="names">김이봄<br>정나현</div></div>
+          <div class="role-group"><div class="role">BOOM OPERATOR</div><div class="names">이호민<br>윤나은</div></div>
+          <div class="role-group"><div class="role">DIRECTOR’S STAFF</div><div class="names">정민기</div></div>
+          <div class="role-group"><div class="role">SOUND SUPERVISOR</div><div class="names">박정빈</div></div>
+          <div class="role-group"><div class="role">MUSIC</div><div class="names">박지성</div></div>
+          <div class="role-group"><div class="role">EDIT</div><div class="names">김태현</div></div>
+          <div class="role-group"><div class="role">MAKING FILM</div><div class="names">이현건</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   const episodes = {
     1: { id: "NK5K-AUM5w0", title: "EP.1 · 우리는 ‘첫 번째’ 길막러다" },
@@ -287,6 +365,7 @@
 
   const gallery = document.getElementById('gallery');
   const player = document.getElementById('player');
+  const credits = document.getElementById('credits');
   const ytWrap = document.getElementById('ytWrap');
   const ytLink = document.getElementById('ytLink');
   const nowPlaying = document.getElementById('nowPlaying');
@@ -298,7 +377,7 @@
   const PLAYER_ORIGIN = 'https://www.youtube.com';
 
   function showScreen(el) {
-    [gallery, player].forEach(s => s.classList.remove('active'));
+    [gallery, player, credits].forEach(s => s.classList.remove('active'));
     el.classList.add('active');
   }
 
@@ -367,6 +446,9 @@
 
   document.getElementById('backBtn').addEventListener('click', backToGallery);
   document.getElementById('toListBtn2').addEventListener('click', backToGallery);
+
+  document.getElementById('creditsBtn').addEventListener('click', () => showScreen(credits));
+  document.getElementById('creditsBackBtn').addEventListener('click', backToGallery);
 
   document.getElementById('retryBtn').addEventListener('click', () => {
     if (currentEp) openEpisode(currentEp);
